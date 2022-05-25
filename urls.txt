@@ -1,0 +1,11 @@
+http://89.108.77.36
+http://89.108.77.36/authapp/login/ POST username=Ruslan&password=12
+http://89.108.77.36/products/
+http://89.108.77.36/products/category/1/
+http://89.108.77.36/products/category/2/
+http://89.108.77.36/products/category/3/
+http://89.108.77.36/products/category/4/
+http://89.108.77.36/authapp/profile/
+http://89.108.77.36/ordersapp/
+http://89.108.77.36/ordersapp/update/2/
+http://89.108.77.36/ordersapp/update/3/

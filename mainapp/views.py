@@ -21,7 +21,7 @@ def products(request, id_category=None, page=1):
         products_ = Product.objects.filter(category_id=id_category).select_related()
         cancel = 'Сбросить фильтр'  # необходимо для того, чтобы "Cбросить фильтр" появлялся только при
         # выборе  категории, а не на главной."
-        categories = ProductCategories.objects.filter(id=id_category).select_related('category')  # В шаблоне отображается только одна выбранная
+        categories = ProductCategories.objects.filter(id=id_category).select_related()  # В шаблоне отображается только одна выбранная
         # категория
     else:
         products_ = Product.objects.filter(is_active=True)  # Чтобы в пагинатор не попали неактивные продукты(удаленные)
