@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'template_profiler_panel',
     'social_django',
+    'django_extensions',
     'ordersapp',
 ]
 
@@ -116,7 +117,7 @@ WSGI_APPLICATION = 'geekshop.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-SERVER = True
+SERVER = False
 if SERVER:
     DATABASES = {
         'default': {
