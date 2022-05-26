@@ -1,5 +1,5 @@
 Адрес				Число запросов			Число дублей
-
+                    Было(Стало)             Было(Стало)
 ‘/ ’						3					0
 
 ‘products’					6					0
@@ -11,3 +11,13 @@
 ‘/order/’					4					0
 
 ‘/order/update’				22					16
+
+1a. Оптимизация ‘/profile/’  в контексном процессоре basket добавлен basket_list = Basket.objects.filter(user=request.user).select_related()
+1b. Оптимизация ‘/profile/’  в basket/models скорректирован          def get_basket(self):
+                                                                          return Basket.objects.filter(user=self.user).select_related()
+
+2. Оптимизация ‘/order/update’ в                        if self.request.POST:
+                                                             formset = OrderFormSet(self.request.POST, instance=self.object)
+                                                        else:
+                                                        queryset = self.object.orderitems.select_related()
+                                                        formset = OrderFormSet(instance=self.object, queryset=queryset)

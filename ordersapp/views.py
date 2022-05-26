@@ -32,7 +32,7 @@ class OrderCreate(CreateView, BaseClassContextMixin):
         if self.request.POST:
             formset = OrderFormSet(self.request.POST)
         else:
-            basket_item = Basket.objects.filter(user=self.request.user).select_related()
+            basket_item = Basket.objects.select_related().filter(user=self.request.user).select_related()
             if basket_item:
                 OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemsForm, extra=basket_item.count())
                 formset = OrderFormSet()
@@ -75,7 +75,8 @@ class OrderUpdate(UpdateView, BaseClassContextMixin):
         if self.request.POST:
             formset = OrderFormSet(self.request.POST, instance=self.object)
         else:
-            formset = OrderFormSet(instance=self.object)
+            queryset = self.object.orderitems.select_related()
+            formset = OrderFormSet(instance=self.object, queryset=queryset)
 
             for num, form in enumerate(formset.forms):
                 if form.instance.pk:
