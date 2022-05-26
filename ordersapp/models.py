@@ -78,4 +78,4 @@ class OrderItem(models.Model):
 
     @staticmethod
     def get_item(pk):
-        return OrderItem.objects.get(pk=pk).quantity
+        return OrderItem.objects.select_related().get(pk=pk).quantity
