@@ -4,13 +4,13 @@
 
 ‘products’					6					0
 
-‘products/category/1/’		7					2
+‘products/category/1/’		7(7)				2(2)
 
-‘/profile/’					12(9)				10(4) basket_list = Basket.objects.filter(user=request.user).select_related()
+‘/profile/’					12(9)				10(4)
 
 ‘/order/’					4					0
 
-‘/order/update’				22					16
+‘/order/update’				22(21)				16(16)
 
 1a. Оптимизация ‘/profile/’  в контексном процессоре basket добавлен basket_list = Basket.objects.filter(user=request.user).select_related()
 1b. Оптимизация ‘/profile/’  в basket/models скорректирован          def get_basket(self):
