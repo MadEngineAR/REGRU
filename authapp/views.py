@@ -5,6 +5,8 @@ from django.contrib.auth.views import LogoutView, FormView, LoginView
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import UpdateView
 
 from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserProfileEditForm
@@ -32,7 +34,7 @@ from basket.models import Basket
 #                'form': form}
 #     return render(request, 'authapp/login.html', content)
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class LoginFormView(LoginView, BaseClassContextMixin):
     title = 'Geekshop | Авторизация'
     template_name = 'authapp/login.html'
