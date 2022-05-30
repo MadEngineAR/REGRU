@@ -53,6 +53,18 @@ if DEBUG:
         'template_profiler_panel.panels.template.TemplateProfilerPanel',
     ]
 
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 120
+CACHE_MIDDLEWARE_KEY_PREFIX = 'geekbrains'
+LOW_CACHE = True
+
+CACHES = {
+    'default': {
+    'BACKEND' :   'django.core.cache.backends.memcached.MemcachedCache',
+    'LOCATION': '89.108.77.36:11211'
+    }
+}
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -118,7 +130,7 @@ WSGI_APPLICATION = 'geekshop.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-SERVER = Falsegit
+SERVER = True
 if SERVER:
     DATABASES = {
         'default': {
