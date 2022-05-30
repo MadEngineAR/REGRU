@@ -88,7 +88,7 @@ def get_link_product(category, page):
 
 def get_product_(pk):
     if settings.LOW_CACHE:
-        key = 'product'
+        key = f'product{pk}'
         product = cache.get(key)
         if product is None:
             product = Product.objects.get(id=pk)
