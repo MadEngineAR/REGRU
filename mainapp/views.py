@@ -46,38 +46,44 @@ def index(request):
 #                }
 #     return render(request, 'mainapp/products.html', content)
 
-def get_link_category():
-    if settings.LOW_CACHE:
-        key = 'link_category'
-        link_category = cache.get(key)
-        if link_category is None:
-            link_category = ProductCategories.objects.all()
-            cache.set(key, link_category)
+def get_link_category(category):
+    if category:
+        if settings.LOW_CACHE:
+            key = f'link_category{category}'
+            link_category = cache.get(key)
+            if link_category is None:
+                link_category = ProductCategories.objects.filter(id=category)
+                cache.set(key, link_category)
             return link_category
+        else:
+            return ProductCategories.objects.filter(id=category)
     else:
-        return ProductCategories.objects.all()
+        return ProductCategories.objects.all().select_related()
 
 
 def get_link_product(category, page):
-    if settings.LOW_CACHE:
-        if category:
+    if category:
+        if settings.LOW_CACHE:
             key = f'link_product{category}{page}'
             link_product = cache.get(key)
             if link_product is None:
                 link_product = Product.objects.filter(category_id=category).select_related('category')
                 cache.set(key, link_product)
-                return link_product
+            return link_product
         else:
+            return Product.objects.filter(category_id=category).select_related('category')
+    else:
+        if settings.LOW_CACHE:
             key = 'link_product'
             link_product = cache.get(key)
             if link_product is None:
                 link_product = Product.objects.filter(is_active=True).select_related('category')  # Чтобы в пагинатор
                 # не попали неактивные продукты(удаленные)
                 cache.set(key, link_product)
-                return link_product
-    else:
-        return Product.objects.filter(is_active=True).select_related('category')  # Чтобы в пагинатор
-        # не попали неактивные продукты(удаленные)
+            return link_product
+        else:
+            return Product.objects.filter(is_active=True).select_related('category')  # Чтобы в пагинатор
+    # не попали неактивные продукты(удаленные)
 
 
 def get_product_(pk):
@@ -87,7 +93,7 @@ def get_product_(pk):
         if product is None:
             product = Product.objects.get(id=pk)
             cache.set(key, product)
-            return product
+        return product
     else:
         return Product.objects.get(id=pk)
 
@@ -98,14 +104,14 @@ def products(request, id_category=None, page=1):
         # products_ = Product.objects.filter(category_id=id_category).select_related()
         products_ = get_link_product(id_category, page)
         cancel = 'Сбросить фильтр'  # необходимо для того, чтобы "Cбросить фильтр" появлялся только при
-        # выборе  категории, а не на главной."
+                                                                         # выборе  категории, а не на главной."
         # categories = ProductCategories.objects.filter(id=id_category).select_related()  # В шаблоне
-        # отображается только одна выбранная категория
+                                                                        # отображается только одна выбранная категория
     else:
         products_ = get_link_product(None, None)
         # categories = ProductCategories.objects.all()
         cancel = None
-        pagination = Paginator(products_, per_page=2)
+    pagination = Paginator(products_, per_page=2)
     try:
         product_pagination = pagination.page(page)
     except PageNotAnInteger:
@@ -116,7 +122,7 @@ def products(request, id_category=None, page=1):
     content = {'title': 'geekshop - Каталог',
                'products': product_pagination,
                # 'categories': categories,
-               'categories': get_link_category(),
+               'categories': get_link_category(id_category),
                'cancel': cancel
                }
     return render(request, 'mainapp/products.html', content)
