@@ -1,16 +1,16 @@
-Адрес				Число запросов			Число дублей
-                    Было(Стало)             Было(Стало)
-‘/ ’						3					0
+Адрес				Число запросов			Число дублей                  CASH
+                    Было(Стало)             Было(Стало)                 Было(Стало) / Метод
+‘/ ’						3					0                         3-0 (3-0) / ---
 
-‘products’					6					0
+‘products’					6					0                         6-0 (4-0) /Low_cache
 
-‘products/category/1/’		7(7)				2(2)
+‘products/category/1/’		7(7)				2(2)                      7-2(3-0) /Low_cache
 
-‘/profile/’					12(9)				10(4)
+‘/profile/’					12(9)				10(4)                     12-4(7-4) /@cached_property
 
-‘/order/’					4					0
+‘/order/’					4					0                         4-0 (4-0) / ---
 
-‘/order/update’				22(21)				16(16)
+‘/order/update’				22(21)				16(16)                    22-16(8-3) /Template_cache
 
 1a. Оптимизация ‘/profile/’  в контексном процессоре basket добавлен basket_list = Basket.objects.filter(user=request.user).select_related()
 1b. Оптимизация ‘/profile/’  в basket/models скорректирован          def get_basket(self):

@@ -1,0 +1,18 @@
+Параметр                                     -r50 -c50                          CASH
+
+Transactions:		                         26676 hits                         27300
+Availability:		                         99.10 %                            99.27
+Elapsed time:		                         576.62 secs                        365.92 secs
+Data transferred:	                         3525.02 MB                         4350.32 MB
+Response time:		                         1.02 secs                          0.67 secs
+Transaction rate:	                         46.26 trans/sec                    74.61 trans/sec
+Throughput:		                             6.11 MB/sec                        11.89 MB/sec
+Concurrency:		                         47.22                              49.62
+Successful transactions:                     26223                              27050
+Failed transactions:	                     241                                200
+Longest transaction:	                     15.85                              15.8
+Shortest transaction:	                     0.00                               0.00
+
+Ресурс может ответить без отказов меньше чем 50 пользователям.
+После кэширования заметное уменьшение всех показателей.
+
