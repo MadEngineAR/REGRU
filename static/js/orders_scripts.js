@@ -46,13 +46,13 @@ window.onload = function () {
         }
 //        console.log(price_arr)
     }
-//     console.info('PRICE', price_arr)
-//     console.info('QUANTITY', quantity_arr)
-    // 1 Method
+     console.info('PRICE', price_arr)
+     console.info('QUANTITY', quantity_arr)
+//     1 Method
     $('.order_form').on('click', 'input[type=number]', function(){
         let target = event.target
         orderitem_num = parseInt(target.name.replace('orderitems-','').replace('-quantity'))
-//        console.log(orderitem_num)
+        console.log(orderitem_num)
         if (price_arr[orderitem_num]){
             orderitem_quantity = parseInt(target.value)
             delta_quantity = orderitem_quantity - quantity_arr[orderitem_num]
@@ -80,7 +80,9 @@ window.onload = function () {
     function orderSummaryUpdate(orderitem_price, delta_quantity) {
         delta_cost = orderitem_price*delta_quantity;
         order_total_cost = Number((order_total_cost+delta_cost).toFixed(2));
+        console.log(order_total_cost)
         order_total_quantity = order_total_quantity + delta_quantity;
+        console.log(order_total_quantity)
         $('.order_total_quantity').html(order_total_quantity.toString());
         $('.order_total_cost').html(order_total_cost.toString() + ',00');
     }

@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.cache import cache
 from django.db import transaction
 from django.db.models.signals import pre_save, pre_delete
 from django.dispatch import receiver
@@ -78,9 +80,22 @@ class OrderUpdate(UpdateView, BaseClassContextMixin):
             queryset = self.object.orderitems.select_related()
             formset = OrderFormSet(instance=self.object, queryset=queryset)
 
+            # for num, form in enumerate(formset.forms):
+            #     if form.instance.pk:
+            #         form.initial['price'] = form.instance.product.price
+
             for num, form in enumerate(formset.forms):
-                if form.instance.pk:
-                    form.initial['price'] = form.instance.product.price
+                if settings.LOW_CACHE:
+                    if form.instance.pk:
+                        # print(form.instance.product.price)
+                        key = f'product_price{form.instance.pk}'
+                        form.initial['price'] = cache.get(key)
+                        print(form.initial['price'])
+                        print(cache.get(key))
+                        if form.initial['price'] is None:
+                            form.initial['price'] = form.instance.product.price
+                            print(form.instance.product.price)
+                            cache.set(key, form.initial['price'])
 
         context['orderitems'] = formset
         return context

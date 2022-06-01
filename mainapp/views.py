@@ -56,7 +56,7 @@ def get_link_category(category):
                 cache.set(key, link_category)
             return link_category
         else:
-            return ProductCategories.objects.filter(id=category)
+            return ProductCategories.objects.filter(id=category).select_related()
     else:
         return ProductCategories.objects.all().select_related()
 
