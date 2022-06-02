@@ -28,7 +28,7 @@ def index(request):
 #         categories = ProductCategories.objects.filter(id=id_category).select_related()  # В шаблоне отображается только одна выбранная
 #         # категория
 #     else:
-#         products_ = Product.objects.filter(is_active=True)  # Чтобы в пагинатор не попали неактивные продукты(удаленные)
+#`         products_ = Product.objects.filter(is_active=True)  # Чтобы в пагинатор не попали неактивные продукты(удаленные)
 #         categories = ProductCategories.objects.all()
 #         cancel = None
 #     pagination = Paginator(products_, per_page=2)
@@ -44,7 +44,7 @@ def index(request):
 #                'categories': categories,
 #                'cancel': cancel
 #                }
-#     return render(request, 'mainapp/products.html', content)
+#     return render(request, 'mainapp/products.html', content)`
 
 def get_link_category(category):
     if category:
