@@ -1,10 +1,6 @@
 from django.core.management import BaseCommand
-import json
-from abc import ABC
-
 from django.db.models import Q
-from mainapp.models import Product, ProductCategories
-from authapp.models import User
+from mainapp.models import Product
 
 
 class Command(BaseCommand):
@@ -19,10 +15,13 @@ class Command(BaseCommand):
         product_3 = Product.objects.filter(
             ~Q(category__name='Обувь')
         )
-
+        product_4 = Product.objects.filter(
+            Q(category__name='Обувь'), id=11
+        )
 
 
         print(product_1)
         print(product_2)
         print(product_3)
+        print(product_4)
 
