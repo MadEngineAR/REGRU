@@ -199,7 +199,16 @@ class ProdCatUpdateView(UpdateView, BaseClassContextMixin, CustomDispatchMixin):
 
     def post(self, request, *args, **kwargs):  # передача сообщения
         messages.success(request, 'Вы успешно изменили категорию товаров')
-        return super().post(request, *args, **kwargs)
+        super().post(request, *args, **kwargs)
+
+        # def product_status_set(self):
+        self.object = self.get_object()
+        if not self.object.is_active:
+            products = Product.objects.filter(category__name=self.object.name)
+            for product in products:
+                product.is_active = False
+                product.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 # @user_passes_test(lambda u: u.is_superuser)
@@ -251,20 +260,26 @@ def admin_products_create(request):
 @user_passes_test(lambda u: u.is_superuser)
 def admin_products_update(request, id):
     prod_select = Product.objects.get(id=id)
+    category = ProductCategories.objects.get(name=prod_select.category)
     if request.method == 'POST':
-        form = ProdAdminCreateForm(instance=prod_select, data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Вы успешно изменили продукт')
-            return HttpResponseRedirect(reverse('adminapp:admin_products'))
+        if category.is_active:
+            form = ProdAdminCreateForm(instance=prod_select, data=request.POST, files=request.FILES)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Вы успешно изменили продукт')
+                return HttpResponseRedirect(reverse('adminapp:admin_products'))
+            else:
+                print(form.errors)
+
         else:
-            print(form.errors)
+            messages.error(request, 'Категория товара неактивна')
+            return HttpResponseRedirect(reverse('adminapp:admin_products'))
     else:
         form = ProdAdminCreateForm(instance=prod_select)
-    content = {'title': 'Администратор | Редактирование товара',
-               'form': form,
-               'prod_select': prod_select}
-    return render(request, 'adminapp/admin_products_update_delete.html', content)
+        content = {'title': 'Администратор | Редактирование товара',
+                   'form': form,
+                   'prod_select': prod_select}
+        return render(request, 'adminapp/admin_products_update_delete.html', content)
 
 
 @user_passes_test(lambda u: u.is_superuser)
