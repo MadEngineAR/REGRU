@@ -42,6 +42,7 @@ class UserTestCase(TestCase):
 
 
 
+
     # def test_product_product(self):
     #     for product_item in Product.objects.all():
     #         response = self.client.get(f'/products/detail/{product_item.pk}/')
