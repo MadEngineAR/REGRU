@@ -4,6 +4,8 @@ from django.forms import ModelForm, CheckboxInput
 
 from ordersapp.models import Order, OrderItem
 
+from mainapp.models import Product
+
 
 class OrderForm(forms.ModelForm):
     # is_active = forms.BooleanField(required=False, initial={'is_active': True})
@@ -22,12 +24,14 @@ class OrderForm(forms.ModelForm):
 class OrderItemsForm(forms.ModelForm):
     price = forms.CharField(label='Цена', required=False)
 
+
     class Meta:
         model = OrderItem
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(OrderItemsForm, self).__init__(*args, **kwargs)
+        self.fields['product'].queryset = Product.objects.all().select_related()
 
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'

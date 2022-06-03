@@ -1,0 +1,18 @@
+Параметр                                     -r50 -c50
+
+Transactions:		                         26676 hits
+Availability:		                         99.10 %
+Elapsed time:		                         576.62 secs
+Data transferred:	                         3525.02 MB
+Response time:		                         1.02 secs
+Transaction rate:	                         46.26 trans/sec
+Throughput:		                             6.11 MB/sec
+Concurrency:		                         47.22
+Successful transactions:                     26223
+Failed transactions:	                     241
+Longest transaction:	                     15.85
+Shortest transaction:	                     0.00
+
+Ресурс может ответить без отказов меньше чем 50 пользователям.
+
+

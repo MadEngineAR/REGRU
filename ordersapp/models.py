@@ -25,8 +25,8 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    created = models.DateTimeField(verbose_name='Создан', auto_now=True)
-    updated = models.DateTimeField(verbose_name='Обновлен', auto_now_add=True)
+    created = models.DateTimeField(verbose_name='Создан', auto_now_add=True)
+    updated = models.DateTimeField(verbose_name='Обновлен', auto_now=True)
     paid = models.DateTimeField(verbose_name='Оплачен', null=True, blank=True)
     status = models.CharField(choices=ORDER_STATUS_CHOICES, verbose_name='Статус заказа', max_length=5, default=FORMING)
     is_active = models.BooleanField(verbose_name='Активный', default=True)
@@ -67,6 +67,13 @@ class Order(models.Model):
             self.status = 'FM'
         return self.status
 
+    def get_summary(self):
+        items = self.orderitems.select_related()
+        return {
+            'get_total_cost':sum(list(map(lambda x: x.get_product_cost(), items))),
+            'get_total_quantity':sum(list(map(lambda x: x.quantity, items)))
+        }
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, verbose_name='Заказ', related_name='orderitems', on_delete=models.CASCADE)
@@ -78,4 +85,4 @@ class OrderItem(models.Model):
 
     @staticmethod
     def get_item(pk):
-        return OrderItem.objects.get(pk=pk).quantity
+        return OrderItem.objects.select_related().get(pk=pk).quantity
